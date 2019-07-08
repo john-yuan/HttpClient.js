@@ -94,7 +94,7 @@ var request = client.send({
         // The library will use the name `json` to find a request body
         // processor in the `options.httpRequestBodyProcessor` and use
         // that processor to process the data and set request headers.
-        // The library provides three processor. They are `json`, `form`
+        // The library provides three processors. They are `json`, `form`
         // and `raw`. You can rewrite them, delete them or add a new one
         // by merge your options to the default options.
         json: {
