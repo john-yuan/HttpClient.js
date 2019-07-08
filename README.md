@@ -91,7 +91,7 @@ var request = client.send({
         // That means we should use `JSON.stringify(data)` to encode the
         // data before sending it to the server, and set the request
         // header `Content-Type` to `application/json; charset=UTF-8`.
-        // The library will use the name `json` to find a request content
+        // The library will use the name `json` to find a request body
         // processor in the `options.httpRequestBodyProcessor` and use
         // that processor to process the data and set request headers.
         // The library provides three processor. They are `json`, `form`
