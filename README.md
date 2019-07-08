@@ -1,5 +1,7 @@
 # HttpClient.js
 
+[![npm version](https://img.shields.io/npm/v/x-http-client.svg)](https://www.npmjs.com/package/x-http-client)
+
 HttpClient.js is a library that aims to make it easier to send data to the server and to parse the data returned by the
 server in the browsers. It provides both Promise-style and Callback-style API and can be used to send http requests or
 JSONP requests. It is highly configurable which make it very easy to extend the functionality of this library.
@@ -14,10 +16,17 @@ JSONP requests. It is highly configurable which make it very easy to extend the 
 * Timeout and request cancellation.
 * Promise-style and Callback-style API.
 
+## Installation
+
+```sh
+npm i x-http-client
+```
+
 ## Contents
 
 * [HttpClient.js](#httpclientjs)
     * [Features](#features)
+    * [Installation](#installation)
     * [Contents](#contents)
     * [Getting Started](#getting-started)
         * [1. Creating HttpClient instance](#1-creating-httpclient-instance)
