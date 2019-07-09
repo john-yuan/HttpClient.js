@@ -9,6 +9,7 @@ var watch = function () {
             standalone: 'HttpClient',
             debug: true,
             detectGlobals: false,
+            plugin: [ 'bundle-collapser/plugin' ]
         }
     });
 };
