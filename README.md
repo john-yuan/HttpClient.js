@@ -318,7 +318,7 @@ client.fetchJSONP({
     // The object that contains the jsonp response parsers.
     jsonpResponseParser: {
         json: function () {
-            return this.request.jsonpResponseJSON;
+            return this.request.responseJSON;
         }
     },
 
