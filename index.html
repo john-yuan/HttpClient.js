@@ -11,6 +11,8 @@
     <script>
         var client = new HttpClient({
             baseURL: 'http://example.com'
+        }, null, function (options) {
+            console.log(options);
         });
 
         var request = client.send({
