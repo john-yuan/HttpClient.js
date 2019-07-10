@@ -1,5 +1,7 @@
 # HttpClient.js
 
+[![npm version](https://img.shields.io/npm/v/x-http-client.svg)](https://www.npmjs.com/package/x-http-client)
+
 一个致力于简化网络请求的工具，既支持 HTTP 请求，也支持 JSONP 请求，同时提供 Promise 和回调函数风格的接口。本工具简化了请求参数的封装过程，并提供了非常灵活的配置选项，使得你可以根据项目的实际需要快速定制一个项目专属的网络请求工具。
 
 ## 功能
@@ -10,6 +12,12 @@
 * 可配置的请求数据预处理程序（预置的处理程序有 JSON、FORM 表单、原始数据）；
 * 可配置的请求错误判定程序、响应数据转换程序及错误转换程序；
 * 可配置的请求响应解析程序；
+
+## 安装
+
+```sh
+npm i x-http-client
+```
 
 ## 示例
 
@@ -64,7 +72,7 @@ client.fetch({
         // 始数据（raw），我们不会对原始数据（raw）做任何处理。
         // P.S: 你可以重写、删除预置的请求数据预处理程序，也可以添加新的请求数据预处理程序。
         json: {
-            content: 'Try HttpClient.js'
+            title: 'Try HttpClient.js'
         }
     }
 }).then(response => {
