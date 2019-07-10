@@ -263,16 +263,6 @@ client.fetchJSONP({
     // The default values is `callback`.
     jsonp: 'callback',
 
-    // The object to config the error messages. The keys in the object are error code
-    // such as `ERR_NETWORK`.
-    errorMessages: {
-        ERR_ABORTED: 'Request aborted',
-        ERR_CANCELLED: 'Request cancelled',
-        ERR_NETWORK: 'Network error',
-        ERR_RESPONSE: 'Response error',
-        ERR_TIMEOUT: 'Request timeout'
-    },
-
     // The object that contains the http request body processors.
     httpRequestBodyProcessor: {
         raw: {
