@@ -2,7 +2,7 @@ var watcher = require('@john-yuan/dev-browserify-watcher');
 
 var watch = function () {
     watcher.watch({
-        entry: 'lib/index.js',
+        entry: 'lib/class/HttpClient.js',
         output: 'dist/HttpClient.js',
         paths: 'lib/**/*.js',
         browserifyOptions: {
