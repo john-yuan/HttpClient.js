@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var assert = require('assert');
-var HttpClient = require('../lib/index');
+var HttpClient = require('../lib/class/HttpClient');
 
 describe('version', function () {
     it('version is ' + HttpClient.version, function () {
