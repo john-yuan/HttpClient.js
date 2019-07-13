@@ -86,4 +86,148 @@ client.fetch({
 });
 ```
 
+## 默认配置
+
+```js
+{
+    // HTTP 请求方法，默认 `GET`。
+    method: 'GET',
+
+    // URL 路径前缀，当 `url` 为相对路径时使用，默认为空。
+    baseURL: null,
+
+    // 请求地址，可以包含占位符 `{}`，在发送前此 `url` 会被编译。
+    url: null,
+
+    // 用于编译 `url` 的数据。
+    model: null,
+
+    // 用于编译查询字符串的数据。
+    query: null,
+
+    // 自定义请求头。
+    headers: null,
+
+    // 需要发送的数据，是一个普通对象，其中的数据键名用于指定请求数据的类型，在发送数据前我们
+    // 会根据这个键名找到配置好的请求数据处理程序来处理这个数据。默认的请求数据处理程序有：
+    // json - 处理 JSON 数据（application/json; charset=UTF-8）
+    // form - 处理 FORM 表单数据（application/x-www-form-urlencoded; charset=UTF-8）
+    // raw - 原始数据，不做任何处理
+    body: null,
+
+    // 预留的设置配置对象，内部不会使用这个属性里面包含的任何值，供用户定制的时候使用。
+    settings: {},
+
+    // 在使用 `fetch` 和 `fetchJSONP` 发送请求时，指定用于取消请求的 `CancelController`。
+    // 此配置在使用 `send` 和 `sendJSONP` 发送请求时无效，且会被强制设置为 `null`。
+    controller: null,
+
+    // 此属性的值为内部设置，用户传入的任何值都将被丢弃，这值用来标识发送这个请求时使用的方法，
+    // 可能的值为 `fetch`，`fetchJSONP`，`send` 和 `getJSONP`。
+    requestFunctionName: null,
+
+    // TODO...
+    requestType: null,
+    cors: false,
+    xhrProps: null,
+    username: null,
+    password: null,
+    timeout: 0,
+    noCache: false,
+    noCacheHeaders: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+    },
+    jsonp: 'callback',
+    httpRequestBodyProcessor: {
+        raw: {
+            priority: 0,
+            headers: null,
+            processor: null,
+        },
+        form: {
+            priority: 1,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            processor: function (data, options) {
+                return QS.encode(data);
+            }
+        },
+        json: {
+            priority: 2,
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            processor: function (data, options) {
+                return JSON.stringify(data);
+            }
+        }
+    },
+    httpResponseParser: {
+        json: function () {
+            var responseText = this.request.xhr.responseText;
+            return responseText ? JSON.parse(responseText) : null;
+        },
+        text: function () {
+            return this.request.xhr.responseText;
+        },
+        status: function () {
+            return this.request.xhr.status;
+        }
+    },
+    jsonpResponseParser: {
+        json: function () {
+            return this.request.responseJSON;
+        }
+    },
+    httpResponseErrorParser: null,
+    jsonpResponseErrorParser: null,
+    handleOptions: null,
+    createXHR: function (options) {
+        return new XMLHttpRequest();
+    },
+    createScript: function (options) {
+        var script = document.createElement('script');
+
+        script.setAttribute('type', 'text/javascript');
+        script.setAttribute('charset', 'utf-8');
+
+        return script;
+    },
+    jsonpContainerNode: function (options) {
+        return document.head || document.getElementsByName('head')[0];
+    },
+    jsonpCallbackName: function (options) {
+        return 'jsonp_' + uuid() + '_' + (new Date().getTime());
+    },
+    compileURL: function (url, param, options) {
+        return template(url, param);
+    },
+    encodeQueryString: function (data, options) {
+        return QS.encode(data);
+    },
+    onXhrCreated: null,
+    onXhrOpened: null,
+    onXhrSent: null,
+    onRequestCreated: null,
+    isResponseOk: function (requestType, response) {
+        var status;
+
+        // Http request
+        if (requestType === HTTP_REQUEST) {
+            status = response.request.xhr.status;
+            return (status >= 200 && status < 300) || status === 304;
+        }
+
+        // JSONP request
+        return true;
+    },
+    transformError: null,
+    transformResponse: null,
+    shouldCallErrorCallback: null,
+    shouldCallSuccessCallback: null
+}
+```
+
 ## 未完待续...
