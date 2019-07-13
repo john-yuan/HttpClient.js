@@ -15,11 +15,15 @@
             console.log(options);
         });
 
+        var t1 = Date.now();
+
         var request = client.send({
             method: 'POST',
-            url: '/blog/posts/{postId}',
+            url: '/blog/posts/{ post.id }',
             param: {
-                postId: 1
+                post: {
+                    id: 1
+                }
             },
             query: {
                 excerpt: 'yes'
@@ -31,6 +35,9 @@
                 form: {
                     name: 'YES'
                 }
+            },
+            onRequestCreated: function () {
+                console.log(Date.now() - t1);
             }
         }, function (res) {
             console.log(res);
