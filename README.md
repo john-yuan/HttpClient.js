@@ -32,31 +32,33 @@ const client = new HttpClient({
 });
 
 /**
- * 发送一个 POST 请求并返回一个 Promise，假设接口定义为：
+ * 发送一个 PUT 请求并返回一个 Promise，假设接口定义为：
  *
- * POST https://example.com/todos/{id}?category={categoryId}
+ * PUT https://example.com/posts/{id}?categoryId={categoryId}
  */
 client.fetch({
-    // 请求方法，默认是 `GET`，此处指定为 `POST`。
-    method: 'POST',
+    // 请求方法，默认是 `GET`，此处指定为 `PUT`。
+    method: 'PUT',
 
-    // 请求地址，可以为相对地址，也可以为绝对地址。如果为相对地址，且 `baseURL` 不为
-    // `null`，则会自动添加 `baseURL`。可以在请求地址中添加占位符（使用 `{}`），发送
-    // 请求前 url 会被编译成完整的请求地址。
-    url: '/todos/{id}',
+    // 请求地址，可以为相对地址，也可以为绝对地址。如果为相对地址，且 `baseURL` 是一个字符串，
+    // 则会自动添加 `baseURL`。可以在请求地址中添加占位符（使用 `{}`），发送请求前 url 会
+    // 被编译成完整的请求地址。
+    url: '/posts/{ post.id }',
 
-    // 用于编译 url 的数据，此处的 id 会替换 url 中的 `{id}`。
-    param: {
-        id: 2
+    // 用于编译 url 的数据，此处的 id 会替换 url 中的 `{ post.id }`。
+    model: {
+        post: {
+            id: 1234
+        }
     },
 
-    // 请求地址中的查询字符串，这里的数据会被编译为 category=1 并被添加到 url 中。
+    // 请求地址中的查询字符串，这里的数据会被编译为 categoryId=1 并被添加到 url 中。
     query: {
-        category: 1
+        categoryId: 1
     },
 
     // 经过以上配置之后，最终编译出来的请求地址为：
-    // https://example.com/todos/2?category=1
+    // https://example.com/posts/1234?categoryId=1
 
     // 自定义请求头。
     headers: {

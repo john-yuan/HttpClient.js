@@ -10,39 +10,32 @@
     <script src="./dist/HttpClient.js"></script>
     <script>
         var client = new HttpClient({
-            baseURL: 'http://example.com'
-        }, null, function (options) {
-            console.log(options);
+            baseURL: 'https://example.com'
         });
 
-        var t1 = Date.now();
-
-        var request = client.send({
-            method: 'POST',
-            url: '/blog/posts/{ post.id }',
-            param: {
+        client.fetch({
+            method: 'PUT',
+            url: '/posts/{ post.id }',
+            model: {
                 post: {
-                    id: 1
+                    id: 1234
                 }
             },
             query: {
-                excerpt: 'yes'
+                categoryId: 1
             },
             headers: {
-                'X-Custom-Header': 'Ok',
+                'X-My-Custom-Header': 'testing'
             },
             body: {
-                form: {
-                    name: 'YES'
+                json: {
+                    title: 'Try HttpClient.js'
                 }
-            },
-            onRequestCreated: function () {
-                console.log(Date.now() - t1);
             }
-        }, function (res) {
-            console.log(res);
-        }, function (err) {
-            console.log(err);
+        }).then(response => {
+            var data = response.json();
+        }).catch(error => {
+            console.error(error);
         });
     </script>
 </body>
