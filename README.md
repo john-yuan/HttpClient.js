@@ -127,67 +127,126 @@ client.fetch({
     // 可能的值为 `fetch`，`fetchJSONP`，`send` 和 `getJSONP`。
     requestFunctionName: null,
 
-    // TODO...
+    // 请求类型，值为一个字符串 `HTTP_REQUEST` 或者 `JSONP_REQUESt`，这个值由内部设定，
+    // 用户传入的任何值都会被覆盖。
     requestType: null,
+
+    // 是否开启跨域（默认为 `false`）：
+    // 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`。
+    // 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
+    // `use-credentials`。
     cors: false,
+
+    // 一个对象，里面的键值对都会设置到 `xhr` 对象上。
     xhrProps: null,
+
+    // xhr 认证时使用的用户名。
     username: null,
+
+    // xhr 认证时使用的密码。
     password: null,
+
+    // 超时设置，单位为毫秒。默认为 0，表示不设置定时器。
     timeout: 0,
+
+    // 是否禁用缓存。
     noCache: false,
+
+    // `noCache` 被设置为 `true` 时，需要设置的请求的头。
     noCacheHeaders: {
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache, no-store, must-revalidate'
     },
+
+    // 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`。
     jsonp: 'callback',
+
+    // HTTP 请求数据处理程序。
     httpRequestBodyProcessor: {
+        // 原始数据
         raw: {
+            // 数值越大优先级越高
             priority: 0,
+            // 不添加任何请求头
             headers: null,
-            processor: null,
+            // 原始数据不做处理
+            processor: null
         },
+        // FORM 表单数据
         form: {
+            // 数值越大优先级越高
             priority: 1,
+            // 添加 FORM 表单数据头部信息
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
+            // 序列化表单数据
+            // @param {any} data 需要处理的数据
+            // @param {RequestOptions} options 当前请求的配置信息
+            // @return {any} 发送到服务端的数据（请求 body）
             processor: function (data, options) {
                 return QS.encode(data);
             }
         },
+        // JSON 数据
         json: {
+            // 数值越大优先级越高
             priority: 2,
+            // 添加 JSON 数据头部信息
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
             },
+            // 序列化 JSON 数据
+            // @param {any} data 需要处理的数据
+            // @param {RequestOptions} options 当前请求的配置信息
+            // @return {any} 发送到服务端的数据（请求 body）
             processor: function (data, options) {
                 return JSON.stringify(data);
             }
         }
     },
+
+    // HTTP 响应解析程序。
     httpResponseParser: {
+        // 添加一个 `json` 函数，用于解析 JSON 数据，当调用 `response.json()` 时返回
+        // 解析完成的 JSON 数据。解析失败（非法的 JSON 字符串）时会抛出错误。
         json: function () {
             var responseText = this.request.xhr.responseText;
             return responseText ? JSON.parse(responseText) : null;
         },
+        // 添加一个 `text` 函数，当调用 `response.text()` 时返回服务端返回的文本数据。
         text: function () {
             return this.request.xhr.responseText;
         },
+        // 添加一个 `status` 函数，当调用 `response.status()` 时返回服务端返回的状态码。
         status: function () {
             return this.request.xhr.status;
         }
     },
+
+    // JSONP 响应解析程序。
     jsonpResponseParser: {
+        // 添加一个 `json` 函数，当调用 `response.json()` 时返回服务端发送回来的 JSON 数据。
         json: function () {
             return this.request.responseJSON;
         }
     },
+
+    // HTTP 响应错误解析程序，默认为 `null`。
     httpResponseErrorParser: null,
+
+    // JSONP 响应错误解析程序，默认为 `null`。
     jsonpResponseErrorParser: null,
+
+    // 用于处理请求 options 的回调函数，签名为 `(options: RequestOptions) => void`。
     handleOptions: null,
+
+    // 创建 `xhr` 实例的函数，参数当前配置信息对象，需要返回一个 `XMLHttpRequest` 对象。
     createXHR: function (options) {
         return new XMLHttpRequest();
     },
+
+    // TODO...
     createScript: function (options) {
         var script = document.createElement('script');
 
