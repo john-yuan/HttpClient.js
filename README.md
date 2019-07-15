@@ -214,19 +214,11 @@ client.fetch({
             var responseText = this.request.xhr.responseText;
             return responseText ? JSON.parse(responseText) : null;
         },
-<<<<<<< HEAD
         // 添加一个 `text` 函数，当调用 `response.text()` 时返回服务端返回的文本数据。
         text: function () {
             return this.request.xhr.responseText;
         },
         // 添加一个 `status` 函数，当调用 `response.status()` 时返回服务端返回的状态码。
-=======
-        // 添加一个 `text` 函数，当调用 `response.json()` 时返回服务端返回的文本数据。
-        text: function () {
-            return this.request.xhr.responseText;
-        },
-        // 添加一个 `status` 函数，当调用 `response.json()` 时返回服务端返回的状态码。
->>>>>>> 123c9ee5f6025e3b3bc322dbc5fac20812cbc088
         status: function () {
             return this.request.xhr.status;
         }
