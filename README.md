@@ -91,77 +91,117 @@ client.fetch({
 
 ```js
 {
-    // HTTP 请求方法，默认 `GET`
+    /**
+     * 发送 HTTP 请求时使用的方法，默认为 `GET`
+     */
     method: 'GET',
 
-    // URL 路径前缀，当 `url` 为相对路径时使用，默认为空
+    /**
+     * URL 路径前缀，当 `url` 为相对路径时使用，默认为空
+     */
     baseURL: null,
 
-    // 请求地址，可以包含占位符 `{}`，在发送前此 `url` 会被编译
+    /**
+     * 请求地址，可以包含占位符 `{}`，在发送前此 `url` 会被编译
+     */
     url: null,
 
-    // 用于编译 `url` 的数据
+    /**
+     * 用于编译 `url` 的数据
+     */
     model: null,
 
-    // 用于编译查询字符串的数据
+    /**
+     * 用于编译查询字符串的数据
+     */
     query: null,
 
-    // 自定义请求头。
+    /**
+     * 自定义请求头
+     */
     headers: null,
 
-    // 需要发送的数据，是一个普通对象，其中的数据键名用于指定请求数据的类型，在发送数据前我们
-    // 会根据这个键名找到配置好的请求数据处理程序来处理这个数据。默认的请求数据处理程序有：
-    // json - 处理 JSON 数据（application/json; charset=UTF-8）
-    // form - 处理 FORM 表单数据（application/x-www-form-urlencoded; charset=UTF-8）
-    // raw - 原始数据，不做任何处理
+    /**
+     * 需要发送的数据，是一个普通对象，其中的数据键名用于指定请求数据的类型，在发送数据前我们
+     * 会根据这个键名找到配置好的请求数据处理程序来处理这个数据。默认的请求数据处理程序有：
+     * json - 处理 JSON 数据（application/json; charset=UTF-8）
+     * form - 处理 FORM 表单数据（application/x-www-form-urlencoded; charset=UTF-8）
+     * raw - 原始数据，不做任何处理
+     */
     body: null,
 
-    // 预留的设置配置对象，内部不会使用这个属性里面包含的任何值，供用户定制的时候使用
+    /**
+     * 预留的设置配置对象，内部不会使用这个属性里面包含的任何值，供用户定制的时候使用
+     */
     settings: {},
 
-    // 在使用 `fetch` 和 `fetchJSONP` 发送请求时，指定用于取消请求的 `CancelController`
-    // 此配置在使用 `send` 和 `sendJSONP` 发送请求时无效，且会被强制设置为 `null`
+    /**
+     * 在使用 `fetch` 和 `fetchJSONP` 发送请求时，指定用于取消请求的 `CancelController`
+     * 此配置在使用 `send` 和 `sendJSONP` 发送请求时无效，且会被强制设置为 `null`
+     */
     controller: null,
 
-    // 此属性的值为内部设置，用户传入的任何值都将被丢弃，这值用来标识发送这个请求时使用的方法，
-    // 可能的值为 `fetch`，`fetchJSONP`，`send` 和 `getJSONP`
+    /**
+     * 此属性的值为内部设置，用户传入的任何值都将被丢弃，这值用来标识发送这个请求时使用的方法，
+     * 可能的值为 `fetch`，`fetchJSONP`，`send` 和 `getJSONP`
+     */
     requestFunctionName: null,
 
-    // 请求类型，值为一个字符串 `HTTP_REQUEST` 或者 `JSONP_REQUESt`，这个值由内部设定，
-    // 用户传入的任何值都会被覆盖
+    /**
+     * 请求类型，值为一个字符串 `HTTP_REQUEST` 或者 `JSONP_REQUEST`，这个值由内部设定，
+     * 用户传入的任何值都会被覆盖
+     */
     requestType: null,
 
-    // 是否开启跨域（默认为 `false`）：
-    // 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
-    // 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
-    // `use-credentials`
+    /**
+     * 是否开启跨域（默认为 `false`）：
+     * 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
+     * 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
+     * `use-credentials`
+     */
     cors: false,
 
-    // 一个对象，里面的键值对都会设置到 `xhr` 对象上
+    /**
+     * 一个对象，里面的键值对都会设置到 `XHR` 对象上
+     */
     xhrProps: null,
 
-    // xhr 认证时使用的用户名
+    /**
+     * `XHR` 认证时使用的用户名
+     */
     username: null,
 
-    // xhr 认证时使用的密码
+    /**
+     * `XHR` 认证时使用的密码
+     */
     password: null,
 
-    // 超时设置，单位为毫秒，默认为 0，表示不设置定时器
+    /**
+     * 超时设置，单位为毫秒，默认为 0，表示不设置定时器
+     */
     timeout: 0,
 
-    // 是否禁用缓存。
+    /**
+     * 是否禁用缓存，默认为 `false`
+     */
     noCache: false,
 
-    // `noCache` 被设置为 `true` 时，需要设置的请求的头
+    /**
+     * `noCache` 被设置为 `true` 时，需要设置的请求的头
+     */
     noCacheHeaders: {
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache, no-store, must-revalidate'
     },
 
-    // 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`
+    /**
+     * 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`
+     */
     jsonp: 'callback',
 
-    // HTTP 请求数据处理程序
+    /**
+     * HTTP 请求数据处理程序
+     */
     httpRequestBodyProcessor: {
         // 原始数据
         raw: {
@@ -206,7 +246,9 @@ client.fetch({
         }
     },
 
-    // HTTP 响应解析程序
+    /**
+     * HTTP 响应解析程序
+     */
     httpResponseParser: {
         // 添加一个 `json` 函数，用于解析 JSON 数据，当调用 `response.json()` 时返回
         // 解析完成的 JSON 数据。解析失败（非法的 JSON 字符串）时会抛出错误
@@ -224,7 +266,9 @@ client.fetch({
         }
     },
 
-    // JSONP 响应解析程序。
+    /**
+     * JSONP 响应解析程序
+     */
     jsonpResponseParser: {
         // 添加一个 `json` 函数，当调用 `response.json()` 时返回服务端返回的 JSON 数据
         json: function () {
@@ -232,21 +276,40 @@ client.fetch({
         }
     },
 
-    // HTTP 响应错误解析程序，默认为 `null`
+    /**
+     * HTTP 响应错误解析程序，默认为 `null`
+     */
     httpResponseErrorParser: null,
 
-    // JSONP 响应错误解析程序，默认为 `null`
+    /**
+     * JSONP 响应错误解析程序，默认为 `null`
+     */
     jsonpResponseErrorParser: null,
 
-    // 用于处理请求 options 的回调函数，签名为 `(options: RequestOptions) => void`
+    /**
+     * 用于处理当前请求配置的函数
+     *
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {void} 返回值将被忽略
+     */
     handleOptions: null,
 
-    // 创建 `xhr` 实例的函数，参数当前配置信息对象，需要返回一个 `XMLHttpRequest` 对象
+    /**
+     * 发送 HTTP 请求时，用于创建 `XMLHttpRequest` 对象的函数
+     *
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {XMLHttpRequest} 返回一个 `XHR` 实例
+     */
     createXHR: function (options) {
         return new XMLHttpRequest();
     },
 
-    // TODO...
+    /**
+     * 发送 JSONP 请求时，用于创建 script 节点的函数
+     *
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {HTMLScriptElement} 返回一个 script 节点
+     */
     createScript: function (options) {
         var script = document.createElement('script');
 
@@ -255,37 +318,146 @@ client.fetch({
 
         return script;
     },
+
+    /**
+     * 发送 JSONP 请求时，用于注入 script 节点的容器节点
+     *
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {HTMLElement} 返回一个 DOM 节点
+     */
     jsonpContainerNode: function (options) {
         return document.head || document.getElementsByName('head')[0];
     },
+
+    /**
+     * 发送 JSONP 请求时，用于创建回调函数名称的函数
+     *
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {string} 返回一个合法 JavaScript 函数名称
+     */
     jsonpCallbackName: function (options) {
         return 'jsonp_' + uuid() + '_' + (new Date().getTime());
     },
-    compileURL: function (url, param, options) {
-        return template(url, param);
+
+    /**
+     * 用于编译 URL 的函数
+     *
+     * @param {string} url 需要编译的 URL
+     * @param {Object.<string, *>} model 用来编译 URL 的数据对象
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {string} 返回编译完成的 URL
+     */
+    compileURL: function (url, model, options) {
+        return template(url, model);
     },
-    encodeQueryString: function (data, options) {
-        return QS.encode(data);
+
+    /**
+     * 用于编译查询字符串的函数
+     *
+     * @param {Object.<string, *>} model 用来编译查询字符串的数据对象
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {string} 返回编译完成的查询字符串
+     */
+    encodeQueryString: function (query, options) {
+        return QS.encode(query);
     },
+
+    /**
+     * `XHR` 创建完成回调
+     *
+     * @param {XMLHttpRequest} xhr `XHR` 实例
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {void}
+     */
     onXhrCreated: null,
+
+    /**
+     * `XHR` 打开回调
+     *
+     * @param {XMLHttpRequest} xhr `XHR` 实例
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {void}
+     */
     onXhrOpened: null,
+
+    /**
+     * `XHR` 发送回调
+     *
+     * @param {XMLHttpRequest} xhr `XHR` 实例
+     * @param {RequestOptions} options 当前配置信息
+     * @returns {void}
+     */
     onXhrSent: null,
+
+    /**
+     * 请求创建完成回调
+     *
+     * @param {HttpRequest|JSONPRequest} request 当前请求对象
+     * @returns {void}
+     */
     onRequestCreated: null,
+
+    /**
+     * 用于检测请求返回结果是否正确的函数
+     *
+     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
+     * @param {HttpResponse|JSONPResponse} response 请求响应
+     * @returns {boolean} 请求正确时返回真值（truthy），出错时返回假值（falsy）
+     */
     isResponseOk: function (requestType, response) {
+        var isOk;
         var status;
 
         // Http request
         if (requestType === HTTP_REQUEST) {
-            status = response.request.xhr.status;
-            return (status >= 200 && status < 300) || status === 304;
+            status = +response.request.xhr.status;
+            isOk = (status >= 200 && status < 300) || status === 304;
+        // JSONP request
+        } else {
+            isOk = true;
         }
 
-        // JSONP request
-        return true;
+        return isOk;
     },
+
+    /**
+     * 用于转换错误对象的函数，如果此函数被设置为 `null`，则不会转换错误对象
+     *
+     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
+     * @param {HttpResponseError|JSONPResponseError} error 错误对象
+     * @returns {any} 返回的任何值都会被当做新的错误对象
+     */
     transformError: null,
+
+    /**
+     * 用于转换请求响应的函数，如果此函数被设置为 `null`，则不会转换请求响应
+     *
+     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
+     * @param {HttpResponse|JSONPResponse} response 请求响应
+     * @returns {any} 返回的任何值都会被当做新的请求响应
+     */
     transformResponse: null,
+
+    /**
+     * 一个用于判断是否需要调用错误回调的函数，如果此函数返回一个假值（falsy），则错误回调将永
+     * 远不会被调用，如果这个函数被设置为 `null`，默认会调用错误回调
+     *
+     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
+     * @param {any} transformedError 已转换的错误对象
+     * @param {HttpResponseError|JSONPResponseError} error 原始的错误对象
+     * @returns {boolean} 如果返回一个真值，则会调用错误回调，否则，错误回调不会被调用
+     */
     shouldCallErrorCallback: null,
+
+    /**
+     * 一个用于判断是否需要调用成功回调的函数，如果此函数返回一个假值（falsy），则成功回调将永
+     * 远不会被调用，如果这个函数被设置为 `null`，默认会调用成功回调
+     *
+     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
+     * @param {any} transformedError 已转换的请求响应对象
+     * @param {HttpResponse|JSONPResponse} error 原始的请求响应对象
+     * @returns {boolean} 如果返回一个真值，则会调用成功回调，否则，成功回调不会被调用
+     */
     shouldCallSuccessCallback: null
 }
 ```
