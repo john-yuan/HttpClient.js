@@ -1,6 +1,6 @@
 {
   "name": "x-http-client",
-  "version": "0.0.1-alpha.3",
+  "version": "0.0.1-alpha.4",
   "description": "An http client to make it easier to send requests (including JSONP requests) to the server.",
   "main": "lib/class/HttpClient.js",
   "scripts": {
