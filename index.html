@@ -5,38 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HttpClient.js</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
+    <pre id="log"></pre>
     <script src="./dist/HttpClient.js"></script>
     <script>
-        var client = new HttpClient({
-            baseURL: 'https://example.com'
+
+        var client = new HttpClient();
+
+        client.send({
+            method: 'GET',
+            url: '/http/get/gretting/json'
+        }, function (response) {
+            var data = response.json();
+            printSuccess(JSON.stringify(data, null, 4));
+        }, function (error) {
+            printError(error.code + ' ' + error.message);
         });
 
-        client.fetch({
-            method: 'PUT',
-            url: '/posts/{ post.id }',
-            model: {
-                post: {
-                    id: 1234
-                }
-            },
-            query: {
-                categoryId: 1
-            },
-            headers: {
-                'X-My-Custom-Header': 'testing'
-            },
-            body: {
-                json: {
-                    title: 'Try HttpClient.js'
-                }
+        //----------------------------------------------------------------------
+
+        function now() {
+            var date = new Date();
+            var YYYY = zero(date.getFullYear());
+            var MM = zero(date.getMonth() + 1);
+            var DD = zero(date.getDate());
+            var hh = zero(date.getHours());
+            var mm = zero(date.getMinutes());
+            var ss = zero(date.getSeconds());
+
+            return YYYY + '-' + MM + '-' + DD + ' ' + hh + ':' + mm + ':' + ss;
+        }
+
+        function zero(num) {
+            var n = '' + num;
+
+            while (n.length % 2 !== 0) {
+                n = '0'+ n;
             }
-        }).then(response => {
-            var data = response.json();
-        }).catch(error => {
-            console.error(error);
-        });
+
+            return n;
+        }
+
+        function printLog(message, className) {
+            var div = document.createElement('div');
+            var text = document.createTextNode('\n[' + now() + ']\n' + message);
+
+            if (className) {
+                div.className = className;
+            }
+
+            div.appendChild(text);
+
+            document.getElementById('log').appendChild(div);
+        }
+
+        function printSuccess(message) {
+            printLog(message, 'success');
+        }
+
+        function printError(message) {
+            printLog(message, 'error');
+        }
     </script>
 </body>
 </html>
