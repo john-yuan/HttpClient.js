@@ -131,6 +131,37 @@ client.fetch({
     body: null,
 
     /**
+     * 超时设置，单位为毫秒，默认为 0，表示不设置定时器
+     */
+    timeout: 0,
+
+    /**
+     * 是否开启跨域（默认为 `false`）：
+     * 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
+     * 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
+     * `use-credentials`
+     */
+    cors: false,
+
+    /**
+     * 是否禁用缓存，默认为 `false`
+     */
+    noCache: false,
+
+    /**
+     * `noCache` 被设置为 `true` 时，需要设置的请求的头
+     */
+    noCacheHeaders: {
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache, no-store, must-revalidate'
+    },
+
+    /**
+     * 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`
+     */
+    jsonp: 'callback',
+
+    /**
      * 预留的设置配置对象，内部不会使用这个属性里面包含的任何值，供用户定制的时候使用
      */
     settings: {},
@@ -154,14 +185,6 @@ client.fetch({
     requestType: null,
 
     /**
-     * 是否开启跨域（默认为 `false`）：
-     * 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
-     * 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
-     * `use-credentials`
-     */
-    cors: false,
-
-    /**
      * 一个对象，里面的键值对都会设置到 `XHR` 对象上
      */
     xhrProps: null,
@@ -175,29 +198,6 @@ client.fetch({
      * `XHR` 认证时使用的密码
      */
     password: null,
-
-    /**
-     * 超时设置，单位为毫秒，默认为 0，表示不设置定时器
-     */
-    timeout: 0,
-
-    /**
-     * 是否禁用缓存，默认为 `false`
-     */
-    noCache: false,
-
-    /**
-     * `noCache` 被设置为 `true` 时，需要设置的请求的头
-     */
-    noCacheHeaders: {
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache, no-store, must-revalidate'
-    },
-
-    /**
-     * 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`
-     */
-    jsonp: 'callback',
 
     /**
      * HTTP 请求数据处理程序
