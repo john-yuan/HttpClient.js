@@ -15,6 +15,7 @@
     "@john-yuan/dev-browserify-builder": "^1.0.1",
     "@john-yuan/dev-browserify-watcher": "^1.0.0",
     "@john-yuan/dev-server": "^1.0.1",
+    "body-parser": "^1.19.0",
     "bundle-collapser": "^1.3.0",
     "eslint": "^6.0.1",
     "jasmine": "^3.4.0",
