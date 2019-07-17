@@ -6,4 +6,4 @@ var app = server.start(function () {
     watcher.watch();
 });
 
-api.init(app);
+api.defineServices(app);

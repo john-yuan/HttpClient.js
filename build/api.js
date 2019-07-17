@@ -1,16 +1,14 @@
 /**
- * @param {Express} app
+ * Define services for testing.
+ *
+ * @param {Express} app An instance of Express.
  */
-function init(app) {
-    app.get('/http/get/gretting/text', function (req, res) {
-        res.send('Hello');
-    });
-
-    app.get('/http/get/gretting/json', function (req, res) {
-        res.json({
-            text: 'Hello'
+function defineServices(app) {
+    app.get('/api/greeting', function (req, res) {
+        res.send({
+            message: 'hello'
         });
     });
 }
 
-exports.init = init;
+exports.defineServices = defineServices;

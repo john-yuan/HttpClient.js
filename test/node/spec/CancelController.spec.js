@@ -1,18 +1,17 @@
-var CancelController = require('../lib/class/CancelController');
-var assert = require('assert');
+var CancelController = require('../../../lib/class/CancelController');
 
 describe('class.CancelController', function () {
     it('CancelController#isCancelled', function () {
         var cc = new CancelController();
 
-        assert.deepStrictEqual(cc.isCancelled(), false);
+        expect(cc.isCancelled()).toBe(false);
     });
 
     it('CancelController#cancel', function () {
         var cc = new CancelController();
 
         cc.cancel();
-        assert.deepStrictEqual(cc.isCancelled(), true);
+        expect(cc.isCancelled()).toBe(true);
     });
 
     it('CancelController#registerCancelCallback', function () {
@@ -27,10 +26,9 @@ describe('class.CancelController', function () {
             count += 1;
         });
 
-        assert.deepStrictEqual(count, 0);
+        expect(count).toBe(0);
 
         cc.cancel();
-
-        assert.deepStrictEqual(count, 2);
+        expect(count).toBe(2);
     });
 });
