@@ -87,6 +87,16 @@ client.fetch({
 });
 ```
 
+## API
+
+### new HttpClient([defaults, [handleDefaults, [handleRequestOptions]]])
+
+* `defaults` {RequestOptions} （可选）默认的请求配置信息
+* `handleDefaults` {HandleOptionsFunction} （可选）一个用于处理默认配置的函数，该函数的参数为默认配置对象，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
+* `handleRequestOptions` {HandleOptionsFunction} （可选）一个用于处理请求配置的函数，每次发送请求时使用的请求配置对象都会被传递到这个函数进行处理，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
+
+构造函数，用于创建 `HttpClient` 的实例，可在创建实例时指定默认参数及参数处理函数。
+
 ## 默认配置
 
 ```js
