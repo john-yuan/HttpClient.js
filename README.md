@@ -87,7 +87,7 @@ client.fetch({
 });
 ```
 
-## API
+## HttpClient
 
 ### new HttpClient([defaults, [handleDefaults, [handleRequestOptions]]])
 
@@ -95,9 +95,43 @@ client.fetch({
 * `handleDefaults` {HandleOptionsFunction} （可选）一个用于处理默认配置的函数，该函数的参数为默认配置对象，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
 * `handleRequestOptions` {HandleOptionsFunction} （可选）一个用于处理请求配置的函数，每次发送请求时使用的请求配置对象都会被传递到这个函数进行处理，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
 
-构造函数，用于创建 `HttpClient` 的实例，可在创建实例时指定默认参数及参数处理函数。
+### client.fetch(options)
 
-## 默认配置
+* `options` {RequestOptions} 请求配置信息
+* Returns: {Promise<HttpResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
+
+### client.fetchJSONP(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {Promise<JSONPResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
+
+### client.send(options, [onsucess, [onerror]])
+
+* `options` {RequestOptions} 请求配置信息
+* `onsucess` {RequestSuccessCallback} （可选）请求成功回调函数，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据
+* `onerror` {RequestErrorCallback} （可选）请求失败回调函数，参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
+* Returns: {HttpRequest} 返回一个 `HttpRequest` 对象
+
+### client.getJSONP(options, [onsucess, [onerror]])
+
+* `options` {RequestOptions} 请求配置信息
+* `onsucess` {RequestSuccessCallback} （可选）请求成功回调函数，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据
+* `onerror` {RequestErrorCallback} （可选）请求失败回调函数，参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
+* Returns: {JSONPRequest} 返回一个 `JSONPRequest` 对象
+
+### client.copyOptions()
+
+* Returns: {RequestOptions} 返回一个当前 `HttpClient` 对象使用的默认请求配置信息的副本
+
+此方法用于复制一个当前 `HttpClient` 对象使用的默认请求配置信息。_注意，此方法仅存在于该实例上，不存在于 `HttpClient` 的原型链上。_
+
+
+### client.mergeOptions(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {RequestOptions} 返回一个合并后的请求配置信息对象
+
+此方法用于将给定的请求配置信息合并到一个当前 `HttpClient` 对象使用的默认请求配置信息的副本中，并将该副本返回。此副本在返回前会经过 `handleRequestOptions` 函数的处理。_注意，此方法仅存在于该实例上，不存在于 `HttpClient` 的原型链上。_
 
 ```js
 {
