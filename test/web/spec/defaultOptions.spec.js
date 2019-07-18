@@ -4,12 +4,7 @@ describe('defaultOptions', function () {
 
     it('default http method is GET', function (done) {
         client.send({
-            url: '/api/all/echo/{ post.id }',
-            model: {
-                post: {
-                    id: 1
-                }
-            }
+            url: '/api/all/echo/test',
         }, function (response) {
             var data = response.json();
             expect(data.method).toBe('GET');
