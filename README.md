@@ -30,8 +30,8 @@ npm i x-http-client
     * [HttpClient](#httpclient)
         * [new HttpClient(\[defaults, \[handleDefaults, \[handleRequestOptions\]\]\])](#new-httpclientdefaults-handledefaults-handlerequestoptions)
         * [client.fetch(options)](#clientfetchoptions)
-        * [client.fetchJSONP(options)](#clientfetchjsonpoptions)
         * [client.send(options, \[onsucess, \[onerror\]\])](#clientsendoptions-onsucess-onerror)
+        * [client.fetchJSONP(options)](#clientfetchjsonpoptions)
         * [client.getJSONP(options, \[onsucess, \[onerror\]\])](#clientgetjsonpoptions-onsucess-onerror)
         * [client.copyOptions()](#clientcopyoptions)
         * [client.mergeOptions(options)](#clientmergeoptionsoptions)
@@ -117,17 +117,17 @@ client.fetch({
 * `options` {RequestOptions} 请求配置信息
 * Returns: {Promise<HttpResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
 
-### client.fetchJSONP(options)
-
-* `options` {RequestOptions} 请求配置信息
-* Returns: {Promise<JSONPResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
-
 ### client.send(options, [onsucess, [onerror]])
 
 * `options` {RequestOptions} 请求配置信息
 * `onsucess` {RequestSuccessCallback} （可选）请求成功回调函数，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据
 * `onerror` {RequestErrorCallback} （可选）请求失败回调函数，参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
 * Returns: {HttpRequest} 返回一个 `HttpRequest` 对象
+
+### client.fetchJSONP(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {Promise<JSONPResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
 
 ### client.getJSONP(options, [onsucess, [onerror]])
 
