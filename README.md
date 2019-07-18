@@ -20,6 +20,23 @@
 npm i x-http-client
 ```
 
+## 目录
+
+* [HttpClient.js](#httpclientjs)
+    * [功能](#功能)
+    * [安装](#安装)
+    * [目录](#目录)
+    * [示例](#示例)
+    * [HttpClient](#httpclient)
+        * [new HttpClient(\[defaults, \[handleDefaults, \[handleRequestOptions\]\]\])](#new-httpclientdefaults-handledefaults-handlerequestoptions)
+        * [client.fetch(options)](#clientfetchoptions)
+        * [client.fetchJSONP(options)](#clientfetchjsonpoptions)
+        * [client.send(options, \[onsucess, \[onerror\]\])](#clientsendoptions-onsucess-onerror)
+        * [client.getJSONP(options, \[onsucess, \[onerror\]\])](#clientgetjsonpoptions-onsucess-onerror)
+        * [client.copyOptions()](#clientcopyoptions)
+        * [client.mergeOptions(options)](#clientmergeoptionsoptions)
+    * [默认配置](#默认配置)
+
 ## 示例
 
 ```js
