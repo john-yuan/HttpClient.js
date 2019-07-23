@@ -288,7 +288,7 @@ client.fetch({
             // 序列化表单数据
             // @param {any} data 需要处理的数据
             // @param {RequestOptions} options 当前请求的配置信息
-            // @return {any} 发送到服务端的数据（请求 body）
+            // @returns {any} 发送到服务端的数据（请求 body）
             processor: function (data, options) {
                 return QS.encode(data);
             }
@@ -304,7 +304,7 @@ client.fetch({
             // 序列化 JSON 数据
             // @param {any} data 需要处理的数据
             // @param {RequestOptions} options 当前请求的配置信息
-            // @return {any} 发送到服务端的数据（请求 body）
+            // @returns {any} 发送到服务端的数据（请求 body）
             processor: function (data, options) {
                 return JSON.stringify(data);
             }
@@ -419,7 +419,7 @@ client.fetch({
     /**
      * 用于编译查询字符串的函数
      *
-     * @param {Object.<string, *>} model 用来编译查询字符串的数据对象
+     * @param {Object.<string, *>} query 用来编译查询字符串的数据对象
      * @param {RequestOptions} options 当前配置信息
      * @returns {string} 返回编译完成的查询字符串
      */
