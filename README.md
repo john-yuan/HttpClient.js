@@ -191,7 +191,7 @@ client.fetch({
      * 会根据这个键名找到配置好的请求数据处理程序来处理这个数据。默认的请求数据处理程序有：
      * json - 处理 JSON 数据（application/json; charset=UTF-8）
      * form - 处理 FORM 表单数据（application/x-www-form-urlencoded; charset=UTF-8）
-     * raw - 原始数据，不做任何处理
+     * raw - 原始数据，不做任何处理，比如 FormData、ArrayBuffer、Blob 等
      */
     body: null,
 
