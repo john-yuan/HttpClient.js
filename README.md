@@ -13,7 +13,7 @@
 * 支持路径变量编译、查询字符串编译及自定义请求头等；
 * 可配置的请求数据预处理程序（预置的处理程序有 JSON、FORM 表单、原始数据）；
 * 可配置的请求错误判定程序、响应数据转换程序及错误转换程序；
-* 可配置的请求响应解析程序；
+* 可配置的请求响应 Mixin；
 * 丰富灵活的配置选项；
 
 ## 安装
@@ -312,9 +312,9 @@ client.fetch({
     },
 
     /**
-     * HTTP 响应解析程序
+     * HTTP 响应 Mixin
      */
-    httpResponseParser: {
+    httpResponseMixin: {
         // 添加一个 `json` 函数，用于解析 JSON 数据，当调用 `response.json()` 时返回
         // 解析完成的 JSON 数据。解析失败（非法的 JSON 字符串）时会抛出错误
         json: function () {
@@ -332,9 +332,9 @@ client.fetch({
     },
 
     /**
-     * JSONP 响应解析程序
+     * JSONP 响应 Mixin
      */
-    jsonpResponseParser: {
+    jsonpResponseMixin: {
         // 添加一个 `json` 函数，当调用 `response.json()` 时返回服务端返回的 JSON 数据
         json: function () {
             return this.request.responseJSON;
@@ -342,14 +342,14 @@ client.fetch({
     },
 
     /**
-     * HTTP 响应错误解析程序，默认为 `null`
+     * HTTP 响应错误 Mixin，默认为 `null`
      */
-    httpResponseErrorParser: null,
+    httpResponseErrorMixin: null,
 
     /**
-     * JSONP 响应错误解析程序，默认为 `null`
+     * JSONP 响应错误 Mixin，默认为 `null`
      */
-    jsonpResponseErrorParser: null,
+    jsonpResponseErrorMixin: null,
 
     /**
      * 用于处理当前请求配置的函数
