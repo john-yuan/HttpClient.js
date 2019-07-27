@@ -27,13 +27,32 @@ function defineServices(app) {
     });
 
     app.all('/api/all/echo*', function (req, res) {
-        res.send({
-            method: req.method,
-            query: req.query,
-            path: req.path,
-            headers: req.headers,
-            body: req.body
-        });
+        let timeout = 0;
+
+        if (req.query && req.query.timeout) {
+            timeout = +req.query.timeout || 0;
+        }
+        if (timeout > 0) {
+            setTimeout(function () {
+                res.send({
+                    timeout: timeout,
+                    method: req.method,
+                    query: req.query,
+                    path: req.path,
+                    headers: req.headers,
+                    body: req.body
+                });
+            }, timeout);
+        } else {
+            res.send({
+                timeout: 0,
+                method: req.method,
+                query: req.query,
+                path: req.path,
+                headers: req.headers,
+                body: req.body
+            });
+        }
     });
 }
 
