@@ -11,7 +11,7 @@ describe('#options.controller', function () {
             }).then(function (response) {
                 done.fail('Should not call the success callback');
             }).catch(function (error) {
-                expect(error.code).toBe('ERR_CANCELLED');
+                expect(error.code).toBe('ERR_CANCELED');
                 done();
             });
 
@@ -29,7 +29,7 @@ describe('#options.controller', function () {
             }).then(function (response) {
                 done.fail('Should not call the success callback');
             }).catch(function (error) {
-                expect(error.code).toBe('ERR_CANCELLED');
+                expect(error.code).toBe('ERR_CANCELED');
                 done();
             });
         });
@@ -46,7 +46,7 @@ describe('#options.controller', function () {
             }).then(function (response) {
                 done.fail('Should not call the success callback');
             }).catch(function (error) {
-                expect(error.code).toBe('ERR_CANCELLED');
+                expect(error.code).toBe('ERR_CANCELED');
                 done();
             });
 

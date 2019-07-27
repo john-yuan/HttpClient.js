@@ -1,17 +1,17 @@
 var CancelController = require('../../../lib/class/CancelController');
 
 describe('class.CancelController', function () {
-    it('CancelController#isCancelled', function () {
+    it('CancelController#isCanceled', function () {
         var cc = new CancelController();
 
-        expect(cc.isCancelled()).toBe(false);
+        expect(cc.isCanceled()).toBe(false);
     });
 
     it('CancelController#cancel', function () {
         var cc = new CancelController();
 
         cc.cancel();
-        expect(cc.isCancelled()).toBe(true);
+        expect(cc.isCanceled()).toBe(true);
     });
 
     it('CancelController#registerCancelCallback', function () {
