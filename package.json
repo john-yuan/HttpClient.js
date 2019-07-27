@@ -4,8 +4,9 @@
   "description": "An http client to make it easier to send requests (including JSONP requests) to the server.",
   "main": "lib/class/HttpClient.js",
   "scripts": {
-    "build": "node ./build/build.js",
-    "test": "jasmine --config=test/node/support/jasmine.json",
+    "build": "npm run lint && node ./build/build.js",
+    "jasmine": "jasmine --config=test/node/support/jasmine.json",
+    "test": "npm run build && npm run jasmine",
     "lint": "eslint lib",
     "dev": "node ./build/dev.js"
   },
