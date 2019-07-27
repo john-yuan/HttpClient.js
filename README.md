@@ -290,7 +290,8 @@ client.fetch({
             // @param {RequestOptions} options 当前请求的配置信息
             // @returns {any} 发送到服务端的数据（请求 body）
             processor: function (data, options) {
-                return QS.encode(data);
+                // encodeQueryString = require('x-query-string/encode')
+                return encodeQueryString(data);
             }
         },
         // JSON 数据
@@ -424,7 +425,8 @@ client.fetch({
      * @returns {string} 返回编译完成的查询字符串
      */
     encodeQueryString: function (query, options) {
-        return QS.encode(query);
+        // encodeQueryString = require('x-query-string/encode')
+        return encodeQueryString(query);
     },
 
     /**
