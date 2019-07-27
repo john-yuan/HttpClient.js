@@ -18,7 +18,7 @@ describe('#options.controller', function () {
             controller.cancel();
         });
 
-        it('Request can be canceled before sending', function (done) {
+        it('Request can be canceled before calling send', function (done) {
             var controller = client.createCancelController();
 
             controller.cancel();
@@ -40,7 +40,7 @@ describe('#options.controller', function () {
             client.fetch({
                 url: '/api/all/echo/options.controller.promise.3',
                 query: {
-                    timeout: 500
+                    timeout: 100
                 },
                 controller: controller
             }).then(function (response) {
@@ -52,7 +52,48 @@ describe('#options.controller', function () {
 
             setTimeout(function () {
                 controller.cancel();
-            }, 300);
+            }, 30);
+        });
+
+        it('Single controller can be used to cancel multiple requests', function (done) {
+            var controller = client.createCancelController();
+            var finishCount = 0;
+            var finish = function () {
+                finishCount += 1;
+                if (finishCount >= 2) {
+                    done();
+                }
+            };
+
+            client.fetch({
+                url: '/api/all/echo/options.controller.promise.4',
+                query: {
+                    timeout: 100
+                },
+                controller: controller
+            }).then(function (response) {
+                done.fail('Should not call the success callback');
+            }).catch(function (error) {
+                expect(error.code).toBe('ERR_CANCELED');
+                finish();
+            });
+
+            client.fetch({
+                url: '/api/all/echo/options.controller.promise.5',
+                query: {
+                    timeout: 100
+                },
+                controller: controller
+            }).then(function (response) {
+                done.fail('Should not call the success callback');
+            }).catch(function (error) {
+                expect(error.code).toBe('ERR_CANCELED');
+                finish();
+            });
+
+            setTimeout(function () {
+                controller.cancel();
+            }, 30);
         });
     });
 });
