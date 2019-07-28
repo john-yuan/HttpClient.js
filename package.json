@@ -1,7 +1,7 @@
 {
   "name": "x-http-client",
   "version": "0.0.1-alpha.5",
-  "description": "An http client to make it easier to send requests (including JSONP requests) to the server.",
+  "description": "An http client to simplify sending requests (HTTP & JSONP) in the browser.",
   "main": "lib/class/HttpClient.js",
   "scripts": {
     "build": "npm run lint && node ./build/build.js",
