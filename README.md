@@ -201,6 +201,13 @@ client.fetch({
     timeout: 0,
 
     /**
+     * 发送 JSONP 请求时的默认超时时间，即当 timeout 小于等于 0 时，这个值会被当做
+     * timeout 使用。如果想禁用 JSONP 定时器（不推荐），需要将 jsonpDefaultTimeout
+     * 和 timeout 都设置为 0
+     */
+    jsonpDefaultTimeout: 60000,
+
+    /**
      * 是否开启跨域（默认为 `false`）：
      * 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
      * 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
