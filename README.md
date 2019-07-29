@@ -17,7 +17,7 @@ An http client to simplify sending requests (Http & JSONP) in the browser.
 
 ## Install
 
-If you are using npm, just install `i x-http-client` as a dependency.
+If you are using npm, just install `x-http-client` as a dependency.
 
 ```bash
 npm i x-http-client
