@@ -1,198 +1,224 @@
 # HttpClient.js
 
-An http client to simplify sending requests (Http & JSONP) in the browser.
+[![npm version](https://img.shields.io/npm/v/x-http-client.svg)](https://www.npmjs.com/package/x-http-client)
+[![install size](https://packagephobia.now.sh/badge?p=x-http-client)](https://packagephobia.now.sh/result?p=x-http-client)
+[![npm downloads](https://img.shields.io/npm/dm/x-http-client.svg)](http://npm-stat.com/charts.html?package=x-http-client)
 
-## Features
+一个致力于简化网络请求的工具，既支持 HTTP 请求，也支持 JSONP 请求，同时提供 Promise 和回调函数风格的接口。本工具简化了请求参数的封装过程，并提供了非常灵活的配置选项，使得你可以根据项目的实际需要快速定制一个项目专属的网络请求工具。
 
-* Promise-style and callback-style API.
-* Send Http & JSONP requests.
-* Compile url and query string.
-* Cancel request and set timeout.
-* Headers, cache control and CORS.
-* Configurable http request body processor.
-* Configurable function to check whether the response is ok.
-* Configurable functions to transform the responses and the errors.
-* Configurable mixins to the responses and the errors.
-* Other flexible and useful configuration.
+## 功能
 
-## Install
+* 支持 HTTP 请求和 JSONP 请求；
+* 支持取消请求、超时设定、禁用缓存等；
+* 支持路径变量编译、查询字符串编译及自定义请求头等；
+* 可配置的请求数据预处理程序（预置的处理程序有 JSON、FORM 表单、原始数据）；
+* 可配置的请求错误判定程序、响应数据转换程序及错误转换程序；
+* 可配置的请求响应 Mixin；
+* 丰富灵活的配置选项；
 
-If you are using npm, just install `i x-http-client` as a dependency.
+## 安装
 
-```bash
+```sh
 npm i x-http-client
 ```
 
-Otherwise you can import the bundle file with script tag directly.
+## 目录
 
-```html
-<script src="/path/to/HttpClient.min.js"></script>
-```
+* [HttpClient.js](#httpclientjs)
+    * [功能](#功能)
+    * [安装](#安装)
+    * [目录](#目录)
+    * [示例](#示例)
+    * [HttpClient](#httpclient)
+        * [new HttpClient(\[defaults, \[handleDefaults, \[handleRequestOptions\]\]\])](#new-httpclientdefaults-handledefaults-handlerequestoptions)
+        * [client.fetch(options)](#clientfetchoptions)
+        * [client.send(options, \[onsucess, \[onerror\]\])](#clientsendoptions-onsucess-onerror)
+        * [client.fetchJSONP(options)](#clientfetchjsonpoptions)
+        * [client.getJSONP(options, \[onsucess, \[onerror\]\])](#clientgetjsonpoptions-onsucess-onerror)
+        * [client.copyOptions()](#clientcopyoptions)
+        * [client.mergeOptions(options)](#clientmergeoptionsoptions)
+    * [默认配置](#默认配置)
 
-Note that the bundle file also can be used as an [AMD module](https://github.com/amdjs/amdjs-api), which means it can be loaded by [require.js](https://requirejs.org/).
-
-## Example
-
-### 1. An exmaple of GET request
+## 示例
 
 ```js
 import HttpClient from 'x-http-client';
 
 /**
- * Tip: You'd better save the configured instance of `HttpCient` in
- * a individual module and reuse it in other place of your project.
+ * 创建一个实例，并传入默认配置（最好将此实例单独保存在一个模块中，供整个项目使用）
  */
 const client = new HttpClient({
     baseURL: 'https://example.com'
 });
 
 /**
- * GET https://example.com/posts/1
+ * 发送一个 PUT 请求并返回一个 Promise，假设接口定义为：
+ *
+ * PUT https://example.com/posts/{id}?categoryId={categoryId}
  */
 client.fetch({
-    url: '/posts/1'
-}).then(response => {
-    return response.json();
-}).then(data => {
-    console.log(data);
-}).catch(error => {
-    console.error(error);
-});
-```
-
-### 2. An exmaple of PUT request
-
-```js
-import HttpClient from 'x-http-client';
-
-/**
- * Tip: You'd better save the configured instance of `HttpCient` in
- * a individual module and reuse it in other place of your project.
- */
-const client = new HttpClient({
-    baseURL: 'https://example.com'
-});
-
-/**
- * PUT https://example.com/posts/1?category=2
- */
-client.fetch({
-    // The http request method, default is `GET`. Here we use `PUT`.
+    // 请求方法，默认是 `GET`，此处指定为 `PUT`
     method: 'PUT',
-    // The url to request. It will be compiled before sending request.
-    url: 'posts/{ postId }',
-    // The data used to compile the url above.
+
+    // 请求地址，可以为相对地址，也可以为绝对地址。如果为相对地址，且 `baseURL` 是一个字符串，
+    // 则会自动添加 `baseURL`。可以在请求地址中添加占位符（使用 `{}`），发送请求前 url 会
+    // 被编译成完整的请求地址
+    url: '/posts/{ post.id }',
+
+    // 用于编译 url 的数据，此处的 id 会替换 url 中的 `{ post.id }`
     model: {
-        postId: 1
+        post: {
+            id: 1234
+        }
     },
-    // The data to be compiled to query string.
+
+    // 请求地址中的查询字符串，这里的数据会被编译为 categoryId=1 并被添加到 url 中
     query: {
-        category: 2
+        categoryId: 1
     },
-    // The request headers to set.
+
+    // 经过以上配置之后，最终编译出来的请求地址为：
+    // https://example.com/posts/1234?categoryId=1
+
+    // 自定义请求头
     headers: {
-        'X-My-Custom-Header': 'value'
+        'X-My-Custom-Header': 'testing'
     },
-    // The body of the http request.
+
+    // 请求体（body）中包含的数据
     body: {
-        // Send JSON data to the server. The request content type will
-        // be set to `application/json; charset=UTF-8` and the data
-        // will be converted to a JSON string automaticly.
-        // For more details, please read the descriptions of the
-        // option called `body` and `httpRequestBodyProcessor`.
+        // json 这个键名表示我们需要发送的数据格式为 JSON。我们会根据 json 这个关键字找
+        // 到 JSON 的请求数据预处理程序。JSON 预处理程序会将数据转换为 JSON 字符串，并
+        // 将请求头里的 `Content-Type` 设置为 `application/json; charset=UTF-8`
+        //（可配置）。预置的请求数据预处理程序有 JSON（json）、FORM 表单（form）、和原
+        // 始数据（raw），我们不会对原始数据（raw）做任何处理
+        // P.S: 你可以重写、删除预置的请求数据预处理程序，也可以添加新的请求数据预处理程序
         json: {
-            title: 'Using HttpClient.js',
-            content: '...'
+            title: 'Try HttpClient.js'
         }
     }
 }).then(response => {
-    return response.json();
-}).then(data => {
-    console.log(data);
+    // 读取返回的数据（假定返回的内容是一个合法的 JSON 字符串）
+    const data = response.json();
 }).catch(error => {
+    // 打印错误信息
     console.error(error);
 });
 ```
 
-## Default request options
+## HttpClient
+
+### new HttpClient([defaults, [handleDefaults, [handleRequestOptions]]])
+
+* `defaults` {RequestOptions} （可选）默认的请求配置信息
+* `handleDefaults` {HandleOptionsFunction} （可选）一个用于处理默认配置的函数，该函数的参数为默认配置对象，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
+* `handleRequestOptions` {HandleOptionsFunction} （可选）一个用于处理请求配置的函数，每次发送请求时使用的请求配置对象都会被传递到这个函数进行处理，调用方可在函数内修改该配置对象的属性，此函数的返回值会被自动忽略
+
+### client.fetch(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {Promise<HttpResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
+
+### client.send(options, [onsucess, [onerror]])
+
+* `options` {RequestOptions} 请求配置信息
+* `onsucess` {RequestSuccessCallback} （可选）请求成功回调函数，参数为一个 `HttpResponse` 实例或是经过 `transformResponse` 转换后的数据
+* `onerror` {RequestErrorCallback} （可选）请求失败回调函数，参数为一个 `HttpResponseError` 实例或是经过 `transformError` 转换后的数据
+* Returns: {HttpRequest} 返回一个 `HttpRequest` 对象
+
+### client.fetchJSONP(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {Promise<JSONPResponse>} 返回一个 `Promise` 对象，该 `Promise` 决议时，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据，拒绝时参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
+
+### client.getJSONP(options, [onsucess, [onerror]])
+
+* `options` {RequestOptions} 请求配置信息
+* `onsucess` {RequestSuccessCallback} （可选）请求成功回调函数，参数为一个 `JSONPResponse` 实例或是经过 `transformResponse` 转换后的数据
+* `onerror` {RequestErrorCallback} （可选）请求失败回调函数，参数为一个 `JSONPResponseError` 实例或是经过 `transformError` 转换后的数据
+* Returns: {JSONPRequest} 返回一个 `JSONPRequest` 对象
+
+### client.copyOptions()
+
+* Returns: {RequestOptions} 返回一个当前 `HttpClient` 对象使用的默认请求配置信息的副本
+
+此方法用于复制一个当前 `HttpClient` 对象使用的默认请求配置信息。_注意，此方法仅存在于该实例上，不存在于 `HttpClient` 的原型链上。_
+
+
+### client.mergeOptions(options)
+
+* `options` {RequestOptions} 请求配置信息
+* Returns: {RequestOptions} 返回一个合并后的请求配置信息对象
+
+此方法用于将给定的请求配置信息合并到一个当前 `HttpClient` 对象使用的默认请求配置信息的副本中，并将该副本返回。此副本在返回前会经过 `handleRequestOptions` 函数的处理。_注意，此方法仅存在于该实例上，不存在于 `HttpClient` 的原型链上。_
+
+## 默认配置
 
 ```js
 {
     /**
-     * The http request method.
+     * 发送 HTTP 请求时使用的方法，默认为 `GET`
      */
     method: 'GET',
 
     /**
-     * The base url.
+     * URL 路径前缀，当 `url` 为相对路径时使用，默认为空字符串
      */
     baseURL: '',
 
     /**
-     * The url to request. If the url is a relative url and the base url is not empty,
-     * the `baseURL` will be prepended to the `url`. The `url` and `baseURL` can contain
-     * placeholders like `{ post.id }`, which will be replaced by the corresponding value
-     * in the option called `model`.
+     * 请求地址，可以包含占位符 `{}`，在发送前此 `url` 会被编译，默认为空字符串
      */
     url: '',
 
     /**
-     * The data used to compile the request url.
+     * 用于编译 `url` 的数据
      */
     model: null,
 
     /**
-     * The data used to compile to query string.
+     * 用于编译查询字符串的数据
      */
     query: null,
 
     /**
-     * The http request headers to set.
+     * 自定义请求头
      */
     headers: null,
 
     /**
-     * The body of the http request. `body` is a simple plain object that contains only
-     * one property, like `json` or `form`. The property name is used to find a http
-     * request body processor in the option called `httpRequestBodyProcessor`.
-     * The processor we found will be used to process the value of the property,
-     * and add smome extra headers to the request if needed.
-     * We provide three default http request body processors.
-     * json - convert the data to JSON string (application/json; charset=UTF-8).
-     * form - convert the data to form-urlencoded (application/x-www-form-urlencoded; charset=UTF-8).
-     * raw - the data will not be processed and no extra headers will be added.
-     * For more details, please read the description of `httpRequestBodyProcessor`.
+     * 需要发送的数据，是一个普通对象，其中的数据键名用于指定请求数据的类型，在发送数据前我们
+     * 会根据这个键名找到配置好的请求数据处理程序来处理这个数据。默认的请求数据处理程序有：
+     * json - 处理 JSON 数据（application/json; charset=UTF-8）
+     * form - 处理 FORM 表单数据（application/x-www-form-urlencoded; charset=UTF-8）
+     * raw - 原始数据，不做任何处理，比如 FormData、ArrayBuffer、Blob 等
      */
     body: null,
 
     /**
-     * The maximum time (in millisecond) to wait for the response. If the request not
-     * finished in the given time, an error (`ERR_TIMEOUT`) will be thrown. If the timeout
-     * is less than or equal to zero, no timeout will be set.
+     * 超时设置，单位为毫秒，默认为 0，表示不设置定时器
      */
     timeout: 0,
 
     /**
-     * The default timeout when sending JSONP requests. If the `timeout` is less than or equal to
-     * zero this value will be used as `timeout`. So, if you want to disable timeout when sending
-     * JSONP requests (NOT recommended), you should set `timeout` and `jsonpDefaultTimeout` to zero.
+     * 发送 JSONP 请求时的默认超时时间，即当 timeout 小于等于 0 时，这个值会被当做
+     * timeout 使用。如果想禁用 JSONP 定时器（不推荐），需要将 jsonpDefaultTimeout
+     * 和 timeout 都设置为 0
      */
     jsonpDefaultTimeout: 60000,
 
     /**
-     * If `cors` is set to `true`, the `withCredentials` property of the `XMLHttpRequest` instance
-     * will be set to `true` when sending http requests.
+     * 如果这个值被设置为 `true`，则 `xhr.withCredentials` 的值也会被设置为 `true`
      */
     cors: false,
 
     /**
-     * Whether to disable cache. If this value is set to `true`, the headers defined in
-     * `noCacheHeaders` will be added to the request headers.
+     * 是否禁用缓存，默认为 `false`
      */
     noCache: false,
 
     /**
-     * The headers to be added to the request headers when `noCache` is set to `true`.
+     * `noCache` 被设置为 `true` 时，需要设置的请求的头
      */
     noCacheHeaders: {
         'Pragma': 'no-cache',
@@ -200,46 +226,45 @@ client.fetch({
     },
 
     /**
-     * The url search param name that used to hold the callback name when sending JSONP requests.
+     * 发送 JSONP 请求时，用于携带回调函数名称的 url 参数名，默认为 `callback`
      */
     jsonp: 'callback',
 
     /**
-     * The namespace reserved for the users who want extend the library. The library itself will
-     * not use this field.
+     * 预留的设置配置对象，内部不会使用这个属性里面包含的任何值，供用户定制的时候使用
      */
     settings: {},
 
     /**
-     * The cancel controller that be used to cancel requests when using promise API. If you are
-     * using callback API, this property is ignored and will be set to `null` forcely.
+     * 在使用 `fetch` 和 `fetchJSONP` 发送请求时，指定用于取消请求的 `CancelController`
+     * 此配置在使用 `send` 和 `sendJSONP` 发送请求时无效，且会被强制设置为 `null`
      */
     controller: null,
 
     /**
-     * The name of the function that you are using to send requests. The value is set internally,
-     * which can be `send`, `fetch`, `getJSONP` or `fetchJSONP`.
+     * 此属性的值为内部设置，用户传入的任何值都将被丢弃，这值用来标识发送这个请求时使用的方法，
+     * 可能的值为 `fetch`，`fetchJSONP`，`send` 和 `getJSONP`
      */
     requestFunctionName: null,
 
     /**
-     * The type of the request, can be `HTTP_REQUEST` or `JSONP_REQUEST`. The value is set
-     * internally.
+     * 请求类型，值为一个字符串 `HTTP_REQUEST` 或者 `JSONP_REQUEST`，这个值由内部设定，
+     * 用户传入的任何值都会被覆盖
      */
     requestType: null,
 
     /**
-     * The object contains the properties that will be set to the `XMLHttpRequest` instance.
+     * 一个对象，里面的键值对都会设置到 `XHR` 对象上
      */
     xhrProps: null,
 
     /**
-     * The username to use when call `XMLHttpRequest#open()`.
+     * `XHR` 认证时使用的用户名
      */
     username: null,
 
     /**
-     * The password to use when call `XMLHttpRequest#open()`.
+     * `XHR` 认证时使用的密码
      */
     password: null,
 
@@ -507,3 +532,5 @@ client.fetch({
     shouldCallSuccessCallback: null
 }
 ```
+
+## 未完待续...
