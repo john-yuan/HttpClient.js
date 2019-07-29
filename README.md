@@ -208,10 +208,7 @@ client.fetch({
     jsonpDefaultTimeout: 60000,
 
     /**
-     * 是否开启跨域（默认为 `false`）：
-     * 1. 如果为 HTTP 请求，且设置为 `true`，会将 `xhr.withCredentials` 的属性设置为 `true`
-     * 2. 如果为 JSONP 请求，且设置为 `true`，会将 `script` 标签的 `crossorigin` 属性 设置为
-     *    `use-credentials`
+     * 如果这个值被设置为 `true`，则 `xhr.withCredentials` 的值也会被设置为 `true`
      */
     cors: false,
 
