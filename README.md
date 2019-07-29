@@ -39,7 +39,7 @@ Note that the bundle file also can be used as an [AMD module](https://github.com
 import HttpClient from 'x-http-client';
 
 /**
- * Tip: You'd better save the configured instance of `HttpCient` in
+ * Tip: You'd better save the configured instance of `HttpClient` in
  * a individual module and reuse it in other place of your project.
  */
 const client = new HttpClient({
@@ -66,7 +66,7 @@ client.fetch({
 import HttpClient from 'x-http-client';
 
 /**
- * Tip: You'd better save the configured instance of `HttpCient` in
+ * Tip: You'd better save the configured instance of `HttpClient` in
  * a individual module and reuse it in other place of your project.
  */
 const client = new HttpClient({
