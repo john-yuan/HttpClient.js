@@ -1,6 +1,13 @@
 # HttpClient.js
 
+[![npm version](https://img.shields.io/npm/v/x-http-client.svg)](https://www.npmjs.com/package/x-http-client)
+[![Build Status](https://travis-ci.org/john-yuan/HttpClient.js.svg?branch=master)](https://travis-ci.org/john-yuan/HttpClient.js)
+[![install size](https://packagephobia.now.sh/badge?p=x-http-client)](https://packagephobia.now.sh/result?p=x-http-client)
+[![npm downloads](https://img.shields.io/npm/dm/x-http-client.svg)](http://npm-stat.com/charts.html?package=x-http-client)
+
 An http client to simplify sending requests (Http & JSONP) in the browser.
+
+[点击此处查看中文说明文档](./README.zh_CN.md)
 
 ## Features
 

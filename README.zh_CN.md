@@ -1,10 +1,13 @@
 # HttpClient.js
 
 [![npm version](https://img.shields.io/npm/v/x-http-client.svg)](https://www.npmjs.com/package/x-http-client)
+[![Build Status](https://travis-ci.org/john-yuan/HttpClient.js.svg?branch=master)](https://travis-ci.org/john-yuan/HttpClient.js)
 [![install size](https://packagephobia.now.sh/badge?p=x-http-client)](https://packagephobia.now.sh/result?p=x-http-client)
 [![npm downloads](https://img.shields.io/npm/dm/x-http-client.svg)](http://npm-stat.com/charts.html?package=x-http-client)
 
 一个致力于简化网络请求的工具，既支持 HTTP 请求，也支持 JSONP 请求，同时提供 Promise 和回调函数风格的接口。本工具简化了请求参数的封装过程，并提供了非常灵活的配置选项，使得你可以根据项目的实际需要快速定制一个项目专属的网络请求工具。
+
+[Click here to read the English version of this document](./README.md)
 
 ## 功能
 
