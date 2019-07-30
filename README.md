@@ -80,7 +80,7 @@ client.fetch({
     // The http request method, default is `GET`. Here we use `PUT`.
     method: 'PUT',
     // The url to request. It will be compiled before sending request.
-    url: 'posts/{ postId }',
+    url: '/posts/{ postId }',
     // The data used to compile the url above.
     model: {
         postId: 1
