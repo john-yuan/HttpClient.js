@@ -1,6 +1,6 @@
 {
   "name": "x-http-client",
-  "version": "0.0.1-alpha.6",
+  "version": "0.0.1-alpha.7",
   "description": "An http client to simplify sending requests (HTTP & JSONP) in the browser.",
   "main": "lib/class/HttpClient.js",
   "scripts": {
