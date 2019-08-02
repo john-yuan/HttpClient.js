@@ -528,8 +528,8 @@ client.fetch({
      * 远不会被调用，如果这个函数被设置为 `null`，默认会调用成功回调
      *
      * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {any} transformedError 已转换的请求响应对象
-     * @param {HttpResponse|JSONPResponse} error 原始的请求响应对象
+     * @param {any} transformedResponse 已转换的请求响应对象
+     * @param {HttpResponse|JSONPResponse} response 原始的请求响应对象
      * @returns {boolean} 如果返回一个真值，则会调用成功回调，否则，成功回调不会被调用
      */
     shouldCallSuccessCallback: null

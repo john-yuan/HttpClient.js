@@ -251,47 +251,81 @@ client.fetch({
     password: null,
 
     /**
-     * HTTP 请求数据处理程序
+     * The object to hold http request body processors.
      */
     httpRequestBodyProcessor: {
-        // 原始数据
+        /**
+         * The built-in processor `raw`. This processor process the request body by not
+         * processing it. You can use this processor when you want to send `FormData`,
+         * `ArrayBuffer`, `Blob` or anything that do not need to be processed.
+         */
         raw: {
-            // 数值越大优先级越高
+            /**
+             * The higher the number, the higher the priority.
+             */
             priority: 0,
-            // 不添加任何请求头
+            /**
+             * No extra headers will be added when using `raw` processor.
+             */
             headers: null,
-            // 原始数据不做处理
+            /**
+             * The data will not be transformed when using `raw` processor.
+             */
             processor: null
         },
-        // FORM 表单数据
+        /**
+         * The built-in processor `form`. This processor will transform the request body
+         * (an object) to the `form-urlencoded` string and set the request header
+         * `Content-Type` to `application/x-www-form-urlencoded; charset=UTF-8`.
+         * You can change the charset by overwrite the headers of this processor.
+         */
         form: {
-            // 数值越大优先级越高
+            /**
+             * The higher the number, the higher the priority.
+             */
             priority: 1,
-            // 添加 FORM 表单数据头部信息
+            /**
+             * The extra headers to be added when using `form` processor.
+             */
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
-            // 序列化表单数据
-            // @param {any} data 需要处理的数据
-            // @param {RequestOptions} options 当前请求的配置信息
-            // @returns {any} 发送到服务端的数据（请求 body）
+            /**
+             * The function used to process the request body.
+             *
+             * @param {Object.<string, *>} data The data to be processed.
+             * @param {RequestOptions} options The request options.
+             * @returns {string} Returns the processed data that will send to the server.
+             */
             processor: function (data, options) {
                 // encodeQueryString = require('x-query-string/encode')
                 return encodeQueryString(data);
             }
         },
-        // JSON 数据
+        /**
+         * The built-in processor `json`. This processor will transform the request body
+         * (an object) to a JSON string and set the header `Content-Type` to
+         * `application/json; charset=UTF-8`. You can change the charset by overwrite the
+         * headers of this processor.
+         */
         json: {
-            // 数值越大优先级越高
+            /**
+             * The higher the number, the higher the priority.
+             */
             priority: 2,
-            // 添加 JSON 数据头部信息
+            /**
+             * The extra headers to be added when using `json` processor.
+             */
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
             },
-            // 序列化 JSON 数据
-            // @param {any} data 需要处理的数据
-            // @param {RequestOptions} options 当前请求的配置信息
-            // @returns {any} 发送到服务端的数据（请求 body）
+            /**
+             * The function used to process the request body.
+             *
+             * @param {Object.<string, *>} data The data to be processed.
+             * @param {RequestOptions} options The request options.
+             * @returns {string} Returns the processed data that will send to the server.
+             */
             processor: function (data, options) {
                 return JSON.stringify(data);
             }
@@ -299,68 +333,85 @@ client.fetch({
     },
 
     /**
-     * HTTP 响应 Mixin
+     * The object to hold the mixins of the http response.
      */
     httpResponseMixin: {
-        // 添加一个 `json` 函数，用于解析 JSON 数据，当调用 `response.json()` 时返回
-        // 解析完成的 JSON 数据。解析失败（非法的 JSON 字符串）时会抛出错误
+        /**
+         * The mixin function to parse the http response body as JSON string.
+         *
+         * @throws {SyntaxError} Throws error on parsing failed.
+         * @returns {any} Returns the parsed data.
+         */
         json: function () {
             var responseText = this.request.xhr.responseText;
             return responseText ? JSON.parse(responseText) : null;
         },
-        // 添加一个 `text` 函数，当调用 `response.text()` 时返回服务端返回的文本数据
+        /**
+         * The mixin function to retrive the text of the response body.
+         *
+         * @returns {string} Returns the response text.
+         */
         text: function () {
             return this.request.xhr.responseText;
         },
-        // 添加一个 `status` 函数，当调用 `response.status()` 时返回服务端返回的状态码
+        /**
+         * The mixin function to retrive the response status.
+         *
+         * @returns {number} Returns the response status.
+         */
         status: function () {
             return this.request.xhr.status;
         }
     },
 
     /**
-     * JSONP 响应 Mixin
+     * The object to hold the mixins of the jsonp response.
      */
     jsonpResponseMixin: {
-        // 添加一个 `json` 函数，当调用 `response.json()` 时返回服务端返回的 JSON 数据
+        /**
+         * The function to retrive the response JSON of JSONP request.
+         *
+         * @returns {any} Returns the response JSON.
+         */
         json: function () {
             return this.request.responseJSON;
         }
     },
 
     /**
-     * HTTP 响应错误 Mixin，默认为 `null`
+     * The object to hold the mixins of the http response error.
      */
     httpResponseErrorMixin: null,
 
     /**
-     * JSONP 响应错误 Mixin，默认为 `null`
+     * The object to hold the mixins of the JSONP response error.
      */
     jsonpResponseErrorMixin: null,
 
     /**
-     * 用于处理当前请求配置的函数
+     * The function to handle the request options. If this function is set,
+     * it will be called before we using the request options.
      *
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {void} 返回值将被忽略
+     * @param {RequestOptions} options The request options
+     * @returns {void} The return value is ignored.
      */
     handleOptions: null,
 
     /**
-     * 发送 HTTP 请求时，用于创建 `XMLHttpRequest` 对象的函数
+     * The function to create an instance of `XMLHttpRequest`.
      *
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {XMLHttpRequest} 返回一个 `XHR` 实例
+     * @param {RequestOptions} options The request options.
+     * @returns {XMLHttpRequest} Returns an instance of `XMLHttpRequest`.
      */
     createXHR: function (options) {
         return new XMLHttpRequest();
     },
 
     /**
-     * 发送 JSONP 请求时，用于创建 script 节点的函数
+     * The function to create the script element when sending JSONP request.
      *
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {HTMLScriptElement} 返回一个 script 节点
+     * @param {RequestOptions} options The request options.
+     * @returns {HTMLScriptElement} Returns a script element.
      */
     createScript: function (options) {
         var script = document.createElement('script');
@@ -372,43 +423,44 @@ client.fetch({
     },
 
     /**
-     * 发送 JSONP 请求时，用于注入 script 节点的容器节点
+     * The function get the element that will be used to inject the script
+     * element when sending JSONP request.
      *
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {HTMLElement} 返回一个 DOM 节点
+     * @param {RequestOptions} options The request options.
+     * @returns {HTMLElement} Returns an HTML element.
      */
     jsonpContainerNode: function (options) {
         return document.head || document.getElementsByName('head')[0];
     },
 
     /**
-     * 发送 JSONP 请求时，用于创建回调函数名称的函数
+     * The function to create a unique callback name when sending JSONP request.
      *
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {string} 返回一个合法 JavaScript 函数名称
+     * @param {RequestOptions} options The request options.
+     * @returns {string} Returns a string that will be used as JSONP callback name.
      */
     jsonpCallbackName: function (options) {
         return 'jsonp_' + uuid() + '_' + (new Date().getTime());
     },
 
     /**
-     * 用于编译 URL 的函数
+     * The function to compile the URL.
      *
-     * @param {string} url 需要编译的 URL
-     * @param {Object.<string, *>} model 用来编译 URL 的数据对象
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {string} 返回编译完成的 URL
+     * @param {string} url The url string to be compiled (with baseURL prepended if needed).
+     * @param {Object.<string, *>} model The data used to compile the url.
+     * @param {RequestOptions} options The request options.
+     * @returns {string} Returns the compiled url.
      */
     compileURL: function (url, model, options) {
         return template(url, model);
     },
 
     /**
-     * 用于编译查询字符串的函数
+     * The function to encode the query string.
      *
-     * @param {Object.<string, *>} query 用来编译查询字符串的数据对象
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {string} 返回编译完成的查询字符串
+     * @param {Object.<string, *>} query The data to be compiled to query string.
+     * @param {RequestOptions} options The request options.
+     * @returns {string} Returns the compiled query string.
      */
     encodeQueryString: function (query, options) {
         // encodeQueryString = require('x-query-string/encode')
@@ -416,56 +468,56 @@ client.fetch({
     },
 
     /**
-     * `XHR` 创建完成回调
+     * The callback on `XMLHttpRequest` instance created.
      *
-     * @param {XMLHttpRequest} xhr `XHR` 实例
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {void}
+     * @param {XMLHttpRequest} xhr The created `XMLHttpRequest` instance.
+     * @param {RequestOptions} options The request options.
+     * @returns {void} The reutrn value is ignored.
      */
     onXhrCreated: null,
 
     /**
-     * `XHR` 打开回调
+     * The callback on `XMLHttpRequest` opened.
      *
-     * @param {XMLHttpRequest} xhr `XHR` 实例
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {void}
+     * @param {XMLHttpRequest} xhr The `XMLHttpRequest` instance.
+     * @param {RequestOptions} options The request options.
+     * @returns {void} The reutrn value is ignored.
      */
     onXhrOpened: null,
 
     /**
-     * `XHR` 发送回调
+     * The callback on `XMLHttpRequest` sent.
      *
-     * @param {XMLHttpRequest} xhr `XHR` 实例
-     * @param {RequestOptions} options 当前配置信息
-     * @returns {void}
+     * @param {XMLHttpRequest} xhr The `XMLHttpRequest` instance.
+     * @param {RequestOptions} options The request options.
+     * @returns {void} The reutrn value is ignored.
      */
     onXhrSent: null,
 
     /**
-     * 请求创建完成回调
+     * The callback on request created.
      *
-     * @param {HttpRequest|JSONPRequest} request 当前请求对象
-     * @returns {void}
+     * @param {HttpRequest|JSONPRequest} request The current request.
+     * @returns {void} The reutrn value is ignored.
      */
     onRequestCreated: null,
 
     /**
-     * 用于检测请求返回结果是否正确的函数
+     * The function to check whether the repsonse is ok.
      *
-     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {HttpResponse|JSONPResponse} response 请求响应
-     * @returns {boolean} 请求正确时返回真值（truthy），出错时返回假值（falsy）
+     * @param {string} requestType The request type, can be `HTTP_REQUEST` or `JSONP_REQUEST`.
+     * @param {HttpResponse|JSONPResponse} response The response object.
+     * @returns {boolean} Returns `truthy` on response is ok, otherwise returns `falsy`.
      */
     isResponseOk: function (requestType, response) {
         var isOk;
         var status;
 
-        // Http request
+        // Http request.
         if (requestType === HTTP_REQUEST) {
             status = +response.request.xhr.status;
             isOk = (status >= 200 && status < 300) || status === 304;
-        // JSONP request
+        // JSONP request.
         } else {
             isOk = true;
         }
@@ -474,42 +526,48 @@ client.fetch({
     },
 
     /**
-     * 用于转换错误对象的函数，如果此函数被设置为 `null`，则不会转换错误对象
+     * The function to transform the response error. If it is `null` or not a function,
+     * the response error will not be transformed.
      *
-     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {HttpResponseError|JSONPResponseError} error 错误对象
-     * @returns {any} 返回的任何值都会被当做新的错误对象
+     * @param {string} requestType The request type, can be `HTTP_REQUEST` or `JSONP_REQUEST`.
+     * @param {HttpResponseError|JSONPResponseError} error The response error object.
+     * @returns {any} The return value of this function will be used as response error.
      */
     transformError: null,
 
     /**
-     * 用于转换请求响应的函数，如果此函数被设置为 `null`，则不会转换请求响应
+     * The function to transform the response. If it is `null` or not a function, the
+     * response will not be transformed.
      *
-     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {HttpResponse|JSONPResponse} response 请求响应
-     * @returns {any} 返回的任何值都会被当做新的请求响应
+     * @param {string} requestType The request type, can be `HTTP_REQUEST` or `JSONP_REQUEST`.
+     * @param {HttpResponse|JSONPResponse} response The response object.
+     * @returns {any} The return value of this function will be used as response.
      */
     transformResponse: null,
 
     /**
-     * 一个用于判断是否需要调用错误回调的函数，如果此函数返回一个假值（falsy），则错误回调将永
-     * 远不会被调用，如果这个函数被设置为 `null`，默认会调用错误回调
+     * The function to check whether to call the error callback on an error happend. If it is
+     * `null` or not a function, the error callback will be called. If it is a function and
+     * the function returns a `falsy` value the error callback will not be called. Otherwise
+     * the error callback will be called.
      *
-     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {any} transformedError 已转换的错误对象
-     * @param {HttpResponseError|JSONPResponseError} error 原始的错误对象
-     * @returns {boolean} 如果返回一个真值，则会调用错误回调，否则，错误回调不会被调用
+     * @param {string} requestType The request type, can be `HTTP_REQUEST` or `JSONP_REQUEST`.
+     * @param {any} transformedError The transformed error (by `transformError`).
+     * @param {HttpResponseError|JSONPResponseError} error The original response error.
+     * @returns {boolean} Returns `truthy` to call the error callback.
      */
     shouldCallErrorCallback: null,
 
     /**
-     * 一个用于判断是否需要调用成功回调的函数，如果此函数返回一个假值（falsy），则成功回调将永
-     * 远不会被调用，如果这个函数被设置为 `null`，默认会调用成功回调
+     * The function to check whether to call the success callback on request success. If it is
+     * `null` or not a function, the success callback will be called. If it is a function and
+     * the function returns a `falsy` value the success callback will not be called. Otherwise
+     * the success callback will be called.
      *
-     * @param {string} requestType 请求类型，可能值为 `HTTP_REQUEST` 或 `JSONP_REQUEST`
-     * @param {any} transformedError 已转换的请求响应对象
-     * @param {HttpResponse|JSONPResponse} error 原始的请求响应对象
-     * @returns {boolean} 如果返回一个真值，则会调用成功回调，否则，成功回调不会被调用
+     * @param {string} requestType The request type, can be `HTTP_REQUEST` or `JSONP_REQUEST`.
+     * @param {any} transformedResponse The transformed response (by `transformResponse`).
+     * @param {HttpResponse|JSONPResponse} response The original response.
+     * @returns {boolean} Returns `truthy` to call the success callback.
      */
     shouldCallSuccessCallback: null
 }
